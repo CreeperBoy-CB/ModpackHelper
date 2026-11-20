@@ -6,7 +6,7 @@ import com.cb2495.modpackhelper.util.HelpImages;
 import java.lang.reflect.Method;
 
 /**
- * 从 VerityPlus（modid {@code verityconfig}）读取峰谷提示需要的两三个配置项。
+ * 从 VerityPlus（modid {@code verityplus}）读取峰谷提示需要的两三个配置项。
  * <p>峰谷提示本身住在 Modpack Helper，但「用哪个 AI 提供商」与「要不要显示提示」
  * 这两个开关属于 Verity 的配置，只能在 VerityPlus 里读到。这里用反射取，
  * 是为了不把两个模组锁成循环编译依赖。
@@ -16,8 +16,8 @@ public final class VerityPlusConfigBridge {
 
     private VerityPlusConfigBridge() {}
 
-    private static final String CONFIG_MANAGER = "com.cb2495.verityconfig.config.VerityConfigManager";
-    private static final String MOD_CONFIG = "com.cb2495.verityconfig.config.ModConfig";
+    private static final String CONFIG_MANAGER = "com.cb2495.verityplus.config.VerityConfigManager";
+    private static final String MOD_CONFIG = "com.cb2495.verityplus.config.ModConfig";
 
     /** 当前 AI 提供商名；取不到时返回空串。 */
     public static String currentProvider() {

@@ -1,7 +1,7 @@
 package com.cb2495.modpackhelper.util;
 
-import com.cb2495.verityconfig.util.ConfigIO;
-import com.cb2495.verityconfig.util.ImageHeader;
+import com.cb2495.verityplus.util.ConfigIO;
+import com.cb2495.verityplus.util.ImageHeader;
 import com.mojang.logging.LogUtils;
 import org.slf4j.Logger;
 
@@ -14,7 +14,7 @@ import java.io.InputStream;
 /**
  * 帮助图片的共用工具。
  * <p>“读图片文件头算尺寸”和“把解码挪到后台线程”这两件事都直接复用 VerityPlus
- * （modid {@code verityconfig}）里的实现：那是与具体功能无关的通用代码，
+ * （modid {@code verityplus}）里的实现：那是与具体功能无关的通用代码，
  * 没必要在本模组里再抄一份，将来修 bug 也只需要改一处。
  * <p>本类把这几处跨模组的调用收在一处，将来若 VerityPlus 改了包名，只改这一个文件。
  */

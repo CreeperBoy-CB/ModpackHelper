@@ -11,7 +11,7 @@ Minecraft Java 版 **1.20.1 / Forge 47.4.21** 的客户端辅助模组，
 
 ## 一、这是什么
 
-这些功能原本长在 [Verity Plus](https://github.com/CreeperBoy-CB/VerityPlus)（modid: `verityconfig`）里，
+这些功能原本长在 [Verity Plus](https://github.com/CreeperBoy-CB/VerityPlus)（modid: `verityplus`）里，
 后来按「和 Verity 本体无关的周边功能」拆出来独立成模组。
 
 ### 1. 帮助文档（HelperScreen）
@@ -53,7 +53,7 @@ Minecraft Java 版 **1.20.1 / Forge 47.4.21** 的客户端辅助模组，
 |---|---|
 | Minecraft | 1.20.1 |
 | Forge | 47.x（开发与测试使用 47.4.21） |
-| Verity Plus（`verityconfig`） | 2.9.9 及以上 |
+| Verity Plus（`verityplus`） | 2.9.9 及以上 |
 | Verity JE | 6.0.0 及以上 |
 
 把 jar 放进 `mods` 目录即可，客户端专用。

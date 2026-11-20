@@ -95,8 +95,11 @@ minecraft {
             // 可能还没应用，直接写 project.parent.sourceSets 会拿到 null。
             // 官方模板的写法是 rootProject.sourceSets.main（Groovy 动态属性，
             // 在读取时再解析），这里改用它。
+            //
+            // 这里的名字只是 mods{} 里的条目名，必须与 VerityPlus 的 mod_id 一致
+            // （现在两边都叫 verityplus），否则开发期运行会找不到那个 mod。
             mods {
-                verityconfig {
+                "${verityplus_modid}" {
                     source rootProject.sourceSets.main
                 }
             }
@@ -138,14 +141,14 @@ repositories {
     }
 }
 
-// ---------- 依赖 VerityPlus（modid: verityconfig） ----------
+// ---------- 依赖 VerityPlus（modid: verityplus） ----------
 // 本模组需要 VerityPlus 的公共工具类，而 VerityPlus 又在运行期会反射调用本模组的界面，
 // 两者是「Modpack Helper → VerityPlus」的单向编译依赖 + 反向的反射调用。
 //
 // 为了让开发期的两个模组跑在同一个 remap 环境里，ModPackHelper 现在作为
 // VerityPlus（F:/VerityConfig）的 Gradle 子工程被 include 进来：
 //   * 编译期：implementation project.parent —— 直接用对方源码，改完立刻生效；
-//   * 运行期：在 minecraft.runs.client.mods 里把对方注册成 modid verityconfig 的 mod。
+//   * 运行期：在 minecraft.runs.client.mods 里把对方注册成 modid verityplus 的 mod。
 // 这样绝不会把 reobf 后的 SRG jar 塞进 userdev 环境（那会报 NoSuchMethodError）。
 
 dependencies {
@@ -163,7 +166,7 @@ dependencies {
     // 做法：在 VerityConfig 的 settings.gradle 里把自己 include 成 ':modpackhelper'，
     // 这里反查自己的父工程，把它作为依赖源。真正的接线在下面的
     // minecraft.runs.client.mods 里，那里把父工程的 sourceSets.main 注册成
-    // modid verityconfig 的 mod，ForgeGradle 会自己remap成开发期类路径。
+    // modid verityplus 的 mod，ForgeGradle 会自己remap成开发期类路径。
     def verityPlusProject = project.parent
     if (verityPlusProject == null || verityPlusProject.name != 'VerityPlus') {
         throw new GradleException(
@@ -237,7 +240,7 @@ publishing {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
-}
+}
 
 // 源码和资源里都有中文。中文 Windows 上 JVM 默认 file.encoding=GBK，
 // 不显式指定会让 processResources 展开 mods.toml 时按 GBK 读写，

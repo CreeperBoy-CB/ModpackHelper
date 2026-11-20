@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 /**
  * Modpack Helper：整合包的帮助与引导模组。
  * <p>负责帮助文档、常见问题、旧存档导入等与 Verity 本体无关的「周边功能」。
- * 这些功能原来长在 VerityPlus（modid {@code verityconfig}）里，
+ * 这些功能原来长在 VerityPlus（modid {@code verityplus}）里，
  * 现在拆出来独立发布，由本模组依赖 VerityPlus 取得所需的共用工具。
  * <p>模组本身没有方块/物品，只向客户端注册生命周期回调与两条指令。
  */
@@ -35,7 +35,7 @@ public class ModPackHelper {
     public static final String MODID = "modpackhelper";
 
     /** 依赖的 VerityPlus 的 modid；本模组直接调用它的类，改了这里就会起不来。 */
-    public static final String VERITYPLUS_MODID = "verityconfig";
+    public static final String VERITYPLUS_MODID = "verityplus";
 
     private static final Logger LOGGER = LogUtils.getLogger();
 
