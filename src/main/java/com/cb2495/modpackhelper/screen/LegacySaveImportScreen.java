@@ -24,7 +24,7 @@ import java.util.List;
 
 /**
  * 发现旧整合包存档时的导入界面。
- * <p>上方提示发现旧版整合包存档，下方列出所有候选存档供选择，
+ * <p>只画一行标题，下方直接列出所有候选存档供选择，
  * 选中的一条会在行内展开「导入」按钮。
  * <p>导入采用复制，源存档保留；导入结果在界面内就地提示，
  * 不需要玩家去翻日志。
@@ -42,8 +42,8 @@ public class LegacySaveImportScreen extends Screen {
 
     // ===== 布局常量 =====
     private static final int TITLE_Y = 16;
-    private static final int HINT_Y = 34;
-    private static final int LIST_TOP = 74;
+    /** 列表顶端：原来这里留给副标题，副标题去掉后列表整体上移，与标题接上。 */
+    private static final int LIST_TOP = 40;
     private static final int BOTTOM_BAR_HEIGHT = 46;
 
     /** 一条存档占的高度：两行文字加行距。 */
@@ -86,9 +86,9 @@ public class LegacySaveImportScreen extends Screen {
 
         int buttonY = this.height - 30;
 
-        // 没有旧存档时不显示导入按钮，只留跳过
+        // 没有旧存档时不显示「全部导入」，只留「取消」
         boolean hasSaves = !saves.isEmpty();
-        this.addRenderableWidget(Button.builder(Component.literal("跳过，直接开始配置"), btn -> {
+        this.addRenderableWidget(Button.builder(Component.literal("取消"), btn -> {
             finish();
         }).pos(this.width / 2 - (hasSaves ? 105 : 75), buttonY)
                 .size(hasSaves ? 100 : 150, 20).build());
@@ -134,8 +134,7 @@ public class LegacySaveImportScreen extends Screen {
     }
 
     /** 一次性导入全部存档。 */
-    private void importAll() {
-        Path gameDir = Minecraft.getInstance().gameDirectory.toPath();
+    private void importAll() {        Path gameDir = Minecraft.getInstance().gameDirectory.toPath();
         int success = 0;
         int failed = 0;
         for (LegacySave save : new ArrayList<>(saves)) {
@@ -168,9 +167,6 @@ public class LegacySaveImportScreen extends Screen {
         int centerX = this.width / 2;
 
         graphics.drawCenteredString(this.font, this.title, centerX, TITLE_Y, 0xFFFFD700);
-        graphics.drawCenteredString(this.font,
-                Component.literal("发现了旧版整合包存档，是否导入？"),
-                centerX, HINT_Y, 0xFFFFFF);
 
         int listBottom = this.height - BOTTOM_BAR_HEIGHT;
         int totalContentHeight = saves.size() * ROW_HEIGHT;
@@ -179,6 +175,7 @@ public class LegacySaveImportScreen extends Screen {
         if (saves.isEmpty()) {
             String emptyText = resultMessage != null ? null : "没有发现旧版整合包存档";
             if (emptyText != null) {
+                // 没有副标题了，空列表提示直接压在列表区中上方
                 graphics.drawCenteredString(this.font, Component.literal(emptyText),
                         centerX, LIST_TOP + 20, 0xFFAAAAAA);
             }
@@ -413,6 +410,17 @@ public class LegacySaveImportScreen extends Screen {
     @Override
     public boolean isPauseScreen() {
         return true;
+    }
+
+    /**
+     * 按 Esc / 点左上角返回时，回到进来时的那个界面。
+     * <p>{@link #returnScreen} 之前只存着没人用，Esc 会直接把界面关掉回到游戏；
+     * 从引导页进来时那等于把玩家踢出了引导。现在统一退回原界面，
+     * 没指定目标（单独通过指令打开）才关掉。
+     */
+    @Override
+    public void onClose() {
+        Minecraft.getInstance().setScreen(returnScreen);
     }
 
     @Override
